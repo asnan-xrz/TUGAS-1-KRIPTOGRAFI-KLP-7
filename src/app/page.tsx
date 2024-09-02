@@ -5,7 +5,7 @@ import React from "react";
 const page = () => {
   return (
     <>
-      <div className="flex flex-col gap-8 h-screen text-center justify-center items-center">
+      <div className="flex flex-col gap-8 h-screen w-full text-center justify-center items-center">
         <Typography
           variant="h1"
           weight="bold"
