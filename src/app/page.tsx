@@ -5,8 +5,12 @@ import React from "react";
 const page = () => {
   return (
     <>
-      <div className="flex flex-col gap-6 h-screen text-center justify-center items-center">
-        <Typography variant="h1" weight="bold">
+      <div className="flex flex-col gap-8 h-screen text-center justify-center items-center">
+        <Typography
+          variant="h1"
+          weight="bold"
+          className="bg-gradient-to-r from-[#FC466B] to-[#3F5EFB] inline-block text-transparent bg-clip-text"
+        >
           K-K7: Your Ultimate <br /> Encryption Ally
         </Typography>
         <Typography className="w-[60%] mx-auto">
