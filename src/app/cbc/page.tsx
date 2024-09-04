@@ -32,8 +32,7 @@ const Page = () => {
     }
 
     for (let i = 0; i < vector.length; i++) {
-      vectorToBinary +=
-        vectorToBinary + parseInt(vector[i], 16).toString(2).padStart(4, "0");
+      vectorToBinary += parseInt(vector[i], 16).toString(2).padStart(4, "0");
     }
 
     for (let i = 0; i < key.length; i++) {
