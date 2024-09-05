@@ -8,7 +8,6 @@ type Inputs = {
   plaintext: string;
   key: string;
   vector: string;
-  result: string;
 };
 
 const Page = () => {
@@ -21,39 +20,41 @@ const Page = () => {
   const [decryptResult, setDecryptResult] = useState<string>("");
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const { plaintext, vector, key }: any = data;
-    let vectorToBinary: any = "";
-    let keyToBinary: any = "";
+    let { plaintext, vector, key }: Inputs = data;
 
-    let toBinary: any = [];
+    let toString: string = "";
 
-    for (let i = 0; i < plaintext.length; i++) {
-      toBinary[i] = parseInt(plaintext[i], 16).toString(2).padStart(4, "0");
+    let toSection: any = [];
+
+    let j = 0;
+
+    const plainTextLength = plaintext.length / 4;
+
+    for (let i = 0; i < plainTextLength; i++) {
+      j = i * 4;
+      let limit = j + 4;
+      for (j; j < limit; j++) {
+        toString = toString + plaintext[j];
+        toSection[i] = toString;
+      }
+
+      toString = "";
     }
-
-    for (let i = 0; i < vector.length; i++) {
-      vectorToBinary += parseInt(vector[i], 16).toString(2).padStart(4, "0");
-    }
-
-    for (let i = 0; i < key.length; i++) {
-      keyToBinary += parseInt(key[i], 16).toString(2).padStart(4, "0");
-    }
-
-    let cToString: any = [];
 
     let p: any = [];
     let c: any = [];
 
-    for (let i = 0; i < plaintext.length; i++) {
-      toBinary[i] = parseInt(toBinary[i], 2);
+    for (let i = 0; i < plainTextLength; i++) {
+      toSection[i] = parseInt(toSection[i], 2);
       if (i === 0) {
-        p[i] = (toBinary[i] ^ parseInt(vectorToBinary, 2)).toString(2);
-        p[i] = p[i].padStart(4, "0");
+        p[i] = (toSection[i] ^ parseInt(vector, 2))
+          .toString(2)
+          .padStart(4, "0");
       } else {
-        p[i] = toBinary[i] ^ c[i - 1];
+        p[i] = toSection[i] ^ c[i - 1];
       }
       p[i] = p[i].toString(2).padStart(4, "0");
-      p[i] = (parseInt(p[i], 2) ^ parseInt(keyToBinary, 2))
+      p[i] = (parseInt(p[i], 2) ^ parseInt(key, 2))
         .toString(2)
         .padStart(4, "0");
       p[i] = p[i].slice(1) + p[i][0];
@@ -61,10 +62,11 @@ const Page = () => {
       c[i] = p[i];
     }
 
-    let result: string = "";
-    for (let i = 0; i < plaintext.length; i++) {
-      c[i] = c[i].toString(16).toUpperCase();
-      result += c[i];
+    let result: any = "";
+    for (let i = 0; i < plainTextLength; i++) {
+      toSection[i] = c[i].toString(16).toUpperCase();
+      // toSection[i] = c[i].toString(2).padStart(4, '0')
+      result += toSection[i];
     }
 
     setDecryptResult(result);
@@ -77,9 +79,9 @@ const Page = () => {
           <div className="space-y-4 w-[400px]">
             <Textarea
               variant="bordered"
-              label="Plain text"
+              label="Message"
               labelPlacement="inside"
-              placeholder="Enter plain text"
+              placeholder="Enter message"
               className="col-span-12 md:col-span-6 mb-6 md:mb-0"
               errorMessage={errors.plaintext && "Plain text is required"}
               isInvalid={errors.plaintext ? true : false}
@@ -88,7 +90,7 @@ const Page = () => {
             <Input
               type="text"
               variant="bordered"
-              label="Vector"
+              label="IV"
               {...register("vector", { required: false })}
               errorMessage={errors.vector && "Vector field is required"}
               isInvalid={errors.vector ? true : false}
