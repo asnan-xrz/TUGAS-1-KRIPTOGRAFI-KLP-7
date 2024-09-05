@@ -45,22 +45,20 @@ const Page = () => {
     let c: any = [];
 
     for (let i = 0; i < plaintext.length; i++) {
+      toBinary[i] = parseInt(toBinary[i], 2);
       if (i === 0) {
-        p[i] = toBinary[i] ^ vectorToBinary;
-        p[i] ^= keyToBinary;
-        p[i] = p[i] << 1;
-        c[i] = p[i];
-        cToString[i] = c[i];
+        p[i] = (toBinary[i] ^ parseInt(vectorToBinary, 2)).toString(2);
+        p[i] = p[i].padStart(4, "0");
       } else {
-        toBinary[i] = parseInt(toBinary[i], 2);
         p[i] = toBinary[i] ^ c[i - 1];
-        p[i] = p[i].toString(2).padStart(4, "0");
-        p[i] = (parseInt(p[i], 2) ^ parseInt(keyToBinary, 2)).toString(2);
-        p[i] = p[i].slice(1) + p[i][0];
-        p[i] = parseInt(p[i], 2);
-        c[i] = p[i];
-        cToString[i] = c[i].toString(2).padStart(4, "0");
       }
+      p[i] = p[i].toString(2).padStart(4, "0");
+      p[i] = (parseInt(p[i], 2) ^ parseInt(keyToBinary, 2))
+        .toString(2)
+        .padStart(4, "0");
+      p[i] = p[i].slice(1) + p[i][0];
+      p[i] = parseInt(p[i], 2);
+      c[i] = p[i];
     }
 
     let result: string = "";
