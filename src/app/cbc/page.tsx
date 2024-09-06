@@ -13,6 +13,7 @@ type Inputs = {
 const Page = () => {
   const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
@@ -27,6 +28,8 @@ const Page = () => {
     let toSection: any = [];
 
     let j = 0;
+
+    const vectorLength = vector.length;
 
     const plainTextLength = plaintext.length / 4;
 
@@ -45,18 +48,20 @@ const Page = () => {
     let c: any = [];
 
     for (let i = 0; i < plainTextLength; i++) {
+      if (toSection[i].length < vectorLength)
+        toSection[0] = toSection[0].toString(2).padStart(vectorLength, "0");
       toSection[i] = parseInt(toSection[i], 2);
       if (i === 0) {
         p[i] = (toSection[i] ^ parseInt(vector, 2))
           .toString(2)
-          .padStart(4, "0");
+          .padStart(vectorLength, "0");
       } else {
         p[i] = toSection[i] ^ c[i - 1];
       }
-      p[i] = p[i].toString(2).padStart(4, "0");
+      p[i] = p[i].toString(2).padStart(vectorLength, "0");
       p[i] = (parseInt(p[i], 2) ^ parseInt(key, 2))
         .toString(2)
-        .padStart(4, "0");
+        .padStart(vectorLength, "0");
       p[i] = p[i].slice(1) + p[i][0];
       p[i] = parseInt(p[i], 2);
       c[i] = p[i];
@@ -65,11 +70,18 @@ const Page = () => {
     let result: any = "";
     for (let i = 0; i < plainTextLength; i++) {
       toSection[i] = c[i].toString(16).toUpperCase();
-      // toSection[i] = c[i].toString(2).padStart(4, '0')
+      // toSection[i] = c[i].toString(2).padStart(vectorLength, '0')
       result += toSection[i];
     }
 
-    setDecryptResult(result);
+    setDecryptResult(typeof result + " " + result);
+  };
+
+  const plaintextValidation = () => {
+    return (
+      getValues("plaintext").length % 4 === 0 ||
+      "The length must be a multiple of 4"
+    );
   };
 
   return (
@@ -83,24 +95,45 @@ const Page = () => {
               labelPlacement="inside"
               placeholder="Enter message"
               className="col-span-12 md:col-span-6 mb-6 md:mb-0"
-              errorMessage={errors.plaintext && "Plain text is required"}
+              {...register("plaintext", {
+                required: true,
+                validate: plaintextValidation,
+              })}
+              errorMessage={
+                errors.plaintext?.message
+                  ? errors.plaintext.message
+                  : "Plain text field is required"
+              }
               isInvalid={errors.plaintext ? true : false}
-              {...register("plaintext", { required: false })}
             />
             <Input
               type="text"
               variant="bordered"
               label="IV"
-              {...register("vector", { required: false })}
-              errorMessage={errors.vector && "Vector field is required"}
+              {...register("vector", {
+                required: true,
+                minLength: { value: 4, message: "The minimum value is 4 bit" },
+              })}
+              errorMessage={
+                errors.vector?.message
+                  ? errors.vector.message
+                  : "IV field is required"
+              }
               isInvalid={errors.vector ? true : false}
             />
             <Input
               type="text"
               variant="bordered"
               label="Key"
-              {...register("key", { required: false })}
-              errorMessage={errors.key && "Key field is required"}
+              {...register("key", {
+                required: true,
+                minLength: { value: 4, message: "The minimum value is 4 bit" },
+              })}
+              errorMessage={
+                errors.key?.message
+                  ? errors.key.message
+                  : "Key field is required"
+              }
               isInvalid={errors.key ? true : false}
             />
             <Textarea
