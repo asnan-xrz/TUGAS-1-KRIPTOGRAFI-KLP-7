@@ -1,158 +1,16 @@
-"use client";
+import Form1 from "@/components/cbc/Form1";
+import Form2 from "@/components/cbc/Form2";
+import React from "react";
 
-import { Button, Input, Textarea } from "@nextui-org/react";
-import React, { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-
-type Inputs = {
-  plaintext: string;
-  key: string;
-  vector: string;
-};
-
-const Page = () => {
-  const {
-    register,
-    getValues,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
-
-  const [decryptResult, setDecryptResult] = useState<string>("");
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    let { plaintext, vector, key }: Inputs = data;
-
-    let toString: string = "";
-
-    let toSection: any = [];
-
-    let j = 0;
-
-    const vectorLength = vector.length;
-
-    const plainTextLength = plaintext.length / 4;
-
-    for (let i = 0; i < plainTextLength; i++) {
-      j = i * 4;
-      let limit = j + 4;
-      for (j; j < limit; j++) {
-        toString = toString + plaintext[j];
-        toSection[i] = toString;
-      }
-
-      toString = "";
-    }
-
-    let p: any = [];
-    let c: any = [];
-
-    for (let i = 0; i < plainTextLength; i++) {
-      if (toSection[i].length < vectorLength)
-        toSection[0] = toSection[0].toString(2).padStart(vectorLength, "0");
-      toSection[i] = parseInt(toSection[i], 2);
-      if (i === 0) {
-        p[i] = (toSection[i] ^ parseInt(vector, 2))
-          .toString(2)
-          .padStart(vectorLength, "0");
-      } else {
-        p[i] = toSection[i] ^ c[i - 1];
-      }
-      p[i] = p[i].toString(2).padStart(vectorLength, "0");
-      p[i] = (parseInt(p[i], 2) ^ parseInt(key, 2))
-        .toString(2)
-        .padStart(vectorLength, "0");
-      p[i] = p[i].slice(1) + p[i][0];
-      p[i] = parseInt(p[i], 2);
-      c[i] = p[i];
-    }
-
-    let result: any = "";
-    for (let i = 0; i < plainTextLength; i++) {
-      toSection[i] = c[i].toString(16).toUpperCase();
-      // toSection[i] = c[i].toString(2).padStart(vectorLength, '0')
-      result += toSection[i];
-    }
-
-    setDecryptResult(typeof result + " " + result);
-  };
-
-  const plaintextValidation = () => {
-    return (
-      getValues("plaintext").length % 4 === 0 ||
-      "The length must be a multiple of 4"
-    );
-  };
-
+const page = () => {
   return (
     <>
-      <section className="flex flex-col gap-8 h-screen justify-center items-center">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-4 w-[400px]">
-            <Textarea
-              variant="bordered"
-              label="Message"
-              labelPlacement="inside"
-              placeholder="Enter message"
-              className="col-span-12 md:col-span-6 mb-6 md:mb-0"
-              {...register("plaintext", {
-                required: true,
-                validate: plaintextValidation,
-              })}
-              errorMessage={
-                errors.plaintext?.message
-                  ? errors.plaintext.message
-                  : "Plain text field is required"
-              }
-              isInvalid={errors.plaintext ? true : false}
-            />
-            <Input
-              type="text"
-              variant="bordered"
-              label="IV"
-              {...register("vector", {
-                required: true,
-                minLength: { value: 4, message: "The minimum value is 4 bit" },
-              })}
-              errorMessage={
-                errors.vector?.message
-                  ? errors.vector.message
-                  : "IV field is required"
-              }
-              isInvalid={errors.vector ? true : false}
-            />
-            <Input
-              type="text"
-              variant="bordered"
-              label="Key"
-              {...register("key", {
-                required: true,
-                minLength: { value: 4, message: "The minimum value is 4 bit" },
-              })}
-              errorMessage={
-                errors.key?.message
-                  ? errors.key.message
-                  : "Key field is required"
-              }
-              isInvalid={errors.key ? true : false}
-            />
-            <Textarea
-              variant="flat"
-              label="Result"
-              labelPlacement="inside"
-              readOnly
-              className="col-span-12 md:col-span-6 mb-6 md:mb-0"
-              value={decryptResult}
-            />
-          </div>
-          <br />
-          <Button type="submit" className="w-full" color="primary">
-            Encrypt
-          </Button>
-        </form>
+      <section className="mx-auto flex w-full flex-col justify-center gap-24 px-8 py-12 sm:w-[400px] sm:px-0">
+        <Form1 />
+        <Form2 />
       </section>
     </>
   );
 };
 
-export default Page;
+export default page;

@@ -46,34 +46,34 @@ const ECBCalculator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-4">Kalkulator ECB - Agas Ananta</h2>
+    <div className="mx-auto max-w-lg rounded-md bg-white p-6 shadow-md">
+      <h2 className="mb-4 text-2xl font-bold">Kalkulator ECB - Agas Ananta</h2>
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">Plaintext (Hex):</label>
+        <label className="mb-2 block text-gray-700">Plaintext (Hex):</label>
         <input
           type="text"
           value={plaintext}
           onChange={(e) => setPlaintext(e.target.value.toUpperCase())}
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className="w-full rounded-md border border-gray-300 p-2"
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">Kunci (Hex):</label>
+        <label className="mb-2 block text-gray-700">Kunci (Hex):</label>
         <input
           type="text"
           value={key}
           onChange={(e) => setKey(e.target.value.toUpperCase())}
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className="w-full rounded-md border border-gray-300 p-2"
         />
       </div>
       <button
         onClick={encryptECB}
-        className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+        className="w-full rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600"
       >
         Encrypt
       </button>
       {result && (
-        <div className="mt-4 p-4 bg-gray-100 rounded-md">
+        <div className="mt-4 rounded-md bg-gray-100 p-4">
           <h3 className="text-lg font-semibold">Hasil:</h3>
           <p>{result}</p>
         </div>

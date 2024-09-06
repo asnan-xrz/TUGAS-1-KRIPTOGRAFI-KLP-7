@@ -5,7 +5,7 @@ import ECBCalculator from "@/components/ECBCalculator";
 
 const page: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <ECBCalculator />
     </div>
   );
