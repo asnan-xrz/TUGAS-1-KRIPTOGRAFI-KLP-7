@@ -36,7 +36,7 @@ const Form1 = () => {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h1" weight="bold">
-          Convert Everything to Binary
+          Convert to Binary
         </Typography>
         <br />
         <div className="space-y-4">
@@ -65,7 +65,7 @@ const Form1 = () => {
         </div>
         <br />
         <Button type="submit" className="w-full" color="primary">
-          Convert to Binary
+          Convert
         </Button>
       </form>
     </>

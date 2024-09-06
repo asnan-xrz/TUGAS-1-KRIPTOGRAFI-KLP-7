@@ -92,7 +92,7 @@ const Form2 = () => {
           Message Encryption
         </Typography>
         <br />
-        <div className="mx-auto w-[400px] space-y-4">
+        <div className="space-y-4">
           <Textarea
             variant="bordered"
             label="Plain text"
