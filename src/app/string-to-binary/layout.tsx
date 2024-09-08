@@ -4,8 +4,8 @@ import { Metadata } from "next";
 import * as React from "react";
 
 export const metadata: Metadata = {
-  title: "Cipher Block Chaining",
-  description: "This is the Cipher Block Chaining page",
+  title: "String to Binary",
+  description: "This is the String to Binary page",
 };
 
 export default function ComponentsLayout({
@@ -29,13 +29,9 @@ export default function ComponentsLayout({
               {
                 title: "string to binary",
                 href: "/string-to-binary",
-                className: "",
-              },
-              {
-                title: "CBC",
-                href: "/cbc",
                 className: "bg-slate-400 text-[#F8F8F8]",
               },
+              { title: "CBC", href: "/cbc", className: "" },
             ].map((b, index) => (
               <Button
                 key={index}

@@ -1,6 +1,5 @@
 "use client";
 
-import Typography from "@/Typography";
 import { Button, Textarea } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -9,7 +8,7 @@ type Inputs = {
   string: string;
 };
 
-const Form1 = () => {
+const StringToBinary = () => {
   const {
     register,
     handleSubmit,
@@ -35,10 +34,6 @@ const Form1 = () => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h1" weight="bold">
-          Convert to Binary
-        </Typography>
-        <br />
         <div className="space-y-4">
           <Textarea
             variant="bordered"
@@ -72,4 +67,4 @@ const Form1 = () => {
   );
 };
 
-export default Form1;
+export default StringToBinary;

@@ -1,6 +1,5 @@
 "use client";
 
-import Typography from "@/Typography";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -11,11 +10,12 @@ type Inputs = {
   vector: string;
 };
 
-const Form2 = () => {
+const CBCCalculator = () => {
   const {
     register,
     getValues,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -88,10 +88,6 @@ const Form2 = () => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h1" weight="bold">
-          Message Encryption
-        </Typography>
-        <br />
         <div className="space-y-4">
           <Textarea
             variant="bordered"
@@ -132,6 +128,11 @@ const Form2 = () => {
             {...register("key", {
               required: true,
               minLength: { value: 4, message: "The minimum value is 4 bit" },
+              validate: (val: string) => {
+                if (watch("vector").length != val.length) {
+                  return "IV and Key length didn't match";
+                }
+              },
             })}
             errorMessage={
               errors.key?.message ? errors.key.message : "Key field is required"
@@ -156,4 +157,4 @@ const Form2 = () => {
   );
 };
 
-export default Form2;
+export default CBCCalculator;
